@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: Building a user registration API
+  version: 0.0.1
+  description: |
+    Dailymotion handles user registrations. To do so, user creates an account and we send a code by email to verify the account.
+    As a core API developer, you are responsible for building this feature and expose it through API
+
+  termsOfService: 'http://swagger.io/terms/'
+  x-logo:
+    url: '/static/img/dailymotion_logo.jpeg'
+    backgroundColor: '#FFFFFF'
+    altText: Dailimotion Logo
+servers:
+  - url: 'http://localhost:8087/'
+    description: Testing Server
+  - url: 'http://localhost:8087/'
+    description: Local Server
+tags:
+  - name: Registration
+    description: Users registration
+paths:
+  /v1/registration/users:
+    post:
+      summary: registration
+      tags:
+        - Registration
+      requestBody:
+        description: Registration request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+      responses:
+        '200':
+          description: Successfully registered the user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/ResponseStatus'
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/UserWithId'
+        '401':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /v1/registration/users/confirmation/{email}/{code}:
+    get:
+      summary: Confirm user registration
+      tags:
+        - Registration
+      parameters:
+        - in: path
+          required: true
+          name: email
+          schema:
+            type: string
+        - in: path
+          required: true
+          name: code
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Successfully confirmed user registration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/ResponseStatus'
+                  data:
+                    type: object
+                    properties:
+                      username:
+                        type: string
+                        example: john.doe@gmail.com
+        '401':
+          description: Invalid username or confirmation code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ResponseStatus:
+      type: string
+      enum:
+        - success
+        - fail
+        - error
+    ErrorResponseStatus:
+      type: string
+      enum:
+        - fail
+        - error
+    ResponseStatusCode:
+      type: number
+      example: 1023
+    ResponseStatusDescription:
+      type: string
+      example: The user does not exist
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ErrorResponseStatus'
+        statusCode:
+          $ref: '#/components/schemas/ResponseStatusCode'
+        statusDescription:
+          $ref: '#/components/schemas/ResponseStatusDescription'
+    RegistrationRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email address
+          example: john.doe@gmail.com
+        password:
+          type: string
+          description: user password
+          example: M0oiuyt12@uiU
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          description: User email
+          example: John
+    UserWithId:
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: string
+              description: The user identifier
+              format: uuid
+              example: 5e4be2fba63699941117e084

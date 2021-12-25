@@ -1,0 +1,32 @@
+version: '3.2'
+services:
+  app:
+    build:
+      context: .
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    environment:
+      PORT: 8088
+      DB_MONGO_USERNAME: root
+      DB_MONGO_PASSWORD: dailymotion
+      DB_MONGO_HOST: db
+      DB_MONGO_PORT: 27017
+      DB_MONGO_URI_SCHEME: mongodb
+      DB_MONGO_DATABASE: dailymotionDB
+      MAIL_SERVER: smtp.mailtrap.io
+      MAIL_PORT: 587
+      MAIL_USERNAME: 89037efa433a36
+      MAIL_PASSWORD: 60386efc7f64f9
+    ports:
+      - "8087:8088"
+  db:
+    image: mongo
+    restart: always
+    environment:
+     MONGO_INITDB_ROOT_USERNAME: root
+     MONGO_INITDB_ROOT_PASSWORD: dailymotion
+    ports:
+      - "27015:27017"
+
