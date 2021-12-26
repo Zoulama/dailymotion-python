@@ -21,11 +21,25 @@ make setup
 make up
 ```
 
-[Head to]( http://localhost:8087)
+## Go to mailtrip.io , create an account and setup conf values on docker-compose.yml
 
+|                Name | Description     |
+|-------------------- |-----------------|
+| MAIL_SERVER         | smtp.mailtrap.io|
+| MAIL_PORT           | 587             |
+| MAIL_USERNAME       | username        |
+| MAIL_PASSWORD       | password        |
+
+
+[Head to]( http://localhost:8087)
 
 ## Environments
 | ENVIRONMENTS | URL                                                        |
 |--------------|------------------------------------------------------------|
 | DEV          | http://localhost:8087      |
 
+
+## down container
+```
+make down
+```

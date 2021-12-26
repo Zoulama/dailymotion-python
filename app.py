@@ -9,7 +9,6 @@ from src.domain.user.user_entity import UserEntity
 from src.domain.user.user_repository import UserRepository
 from src.domain.user.user_service import UserService, UserNotFoundException
 from src.infrastructure.storage.database.mongo_db.mongo_client import MongodbClient
-from src.infrastructure.mail.mailtrip.mail_client import MailClient
 from os import environ as env
 
 import config
