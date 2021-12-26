@@ -4,7 +4,7 @@ from bson import ObjectId
 import urllib.parse
 
 from flask_bcrypt import Bcrypt
-from src.domain.user.user_entity import UserEntity, UserCollection
+from src.domain.user.user_entity import UserEntity
 
 app = Flask(__name__)
 bcrypt = Bcrypt()
@@ -16,8 +16,6 @@ class UserRepository:
         self.mongodb_user_collection = mongodb_user_collection
 
     def create(self, user_entity: UserEntity) -> UserEntity:
-        app.logger.info(user_entity.user['password'])
-
         user_entity.user['password'] = bcrypt.generate_password_hash(user_entity.user['password'])
         insert_one_result = self.mongodb_user_collection.insert_one(user_entity.to_dict())
         return self.fetch(insert_one_result.inserted_id)

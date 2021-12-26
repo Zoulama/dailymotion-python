@@ -1,4 +1,4 @@
-from .user_entity import UserEntity, UserCollection
+from .user_entity import UserEntity
 from .user_repository import UserRepository, UserNotFoundException as UserNotFoundRepositoryException
 from time import time
 import urllib.parse
